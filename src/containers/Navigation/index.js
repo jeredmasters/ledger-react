@@ -4,7 +4,7 @@ class Navigation extends React.Component {
   render () {
     return (
       <nav className="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-        <div className="container-fluid">
+        <div className="container">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
               <span className="sr-only">Toggle navigation</span>

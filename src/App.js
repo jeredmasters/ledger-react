@@ -1,13 +1,22 @@
 import React, { Component } from 'react'
-import './App.css'
+import './stylesheets/main.scss'
 import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css'
-import Main from './containers/Main'
+
+import Alert from 'react-s-alert'
+
+// Containers
+import Calendar from './containers/Calendar'
+import Navigation from './containers/Navigation'
 
 class App extends Component {
   render () {
     return (
       <div className="App">
-        <Main />
+        <Alert />
+        <Navigation />
+        <div className="container">
+          <Calendar />
+        </div>
       </div>
     )
   }
