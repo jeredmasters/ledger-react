@@ -18,7 +18,7 @@ export const pushLogin = (profile) => {
 export const checkLogin = () => {
   return (dispatch) => {
     api.checkLogin().then((responseBody) => {
-      if (responseBody.user !== null) {
+      if (responseBody.user !== null && responseBody.user !== undefined) {
         dispatch(receiveLogin(responseBody.user))
         dispatch(fetchBookings())
         setTimeout(() => dispatch(push('/hello')), 500)
