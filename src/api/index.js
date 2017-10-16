@@ -8,7 +8,7 @@ export default class api {
   }
 
   static baseUrl () {
-    return 'http://api.jered.cc/'
+    return process.env.REACT_APP_API
   }
 
   static login (profile) {
