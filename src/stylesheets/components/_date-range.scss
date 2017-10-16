@@ -4,8 +4,10 @@
     font-size: 20px;
     background: #FFF;
     color: rgb(52, 73, 94);
+    margin: 0;    
   }
   .rdr-SpecialDay {
-    background: #BB8;
+    background: rgb(122, 122, 57);
+    cursor: not-allowed;
   }
 }

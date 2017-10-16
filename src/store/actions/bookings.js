@@ -11,9 +11,9 @@ export const fetchBookings = () => {
     api.get('b/bookings').then((responseBody) => {
       const bookings = responseBody.data
       for (let i = 0; i < bookings.length; i++) {
-        bookings[i].main = bookings[i].main === '1'
-        bookings[i].flat = bookings[i].flat === '1'
-        bookings[i].studio = bookings[i].studio === '1'
+        bookings[i].main = bookings[i].main === 1 || bookings[i].main === '1'
+        bookings[i].flat = bookings[i].flat === 1 || bookings[i].flat === '1'
+        bookings[i].studio = bookings[i].studio === 1 || bookings[i].studio === '1'
       }
       dispatch(receiveBookings(bookings))
     })

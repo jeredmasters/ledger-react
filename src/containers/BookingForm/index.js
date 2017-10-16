@@ -1,7 +1,7 @@
 // Vendor
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
@@ -16,6 +16,9 @@ import { saveBooking, deleteBooking } from 'store/actions/bookings'
 
 class Booking extends React.Component {
   static propTypes = {
+    conflict: PropTypes.bool,
+
+    // Redux
     bookedDays: PropTypes.array,
     id: PropTypes.any,
     saveBooking: PropTypes.func,
@@ -63,6 +66,9 @@ class Booking extends React.Component {
             name="dates"
             component={DateRangeField}
             specialDays={this.props.bookedDays} />
+          {this.props.conflict
+            ? <label className="conflict-label">booking conflict</label>
+            : null}
         </div>
         <div className="row">
           <div className="col-xs-12">
@@ -96,7 +102,7 @@ class Booking extends React.Component {
           <div className="col-sm-12 text-right">
             <Link to="/calendar" className="btn btn-default">Cancel</Link>
             {this.props.id !== 'new' ? <span className="btn btn-danger" onClick={this.handleDelete}>Delete</span> : null}
-            <input className="btn btn-primary" type="submit" value="Save" />
+            <input className="btn btn-primary" type="submit" value="Save" disabled={this.props.conflict} />
           </div>
         </div>
       </form>
@@ -109,10 +115,22 @@ const BookingForm = reduxForm({
 })(Booking)
 
 export const mapStateToProps = (state, ownProps) => {
+  const selector = formValueSelector('BookingForm')
+  const booking = {
+    id: selector(state, 'id'),
+    main: selector(state, 'main'),
+    flat: selector(state, 'flat'),
+    studio: selector(state, 'studio'),
+    start: selector(state, 'dates.startDate'),
+    end: selector(state, 'dates.endDate')
+  }
+
+  const conflictableBookings = state.Bookings.filter(b => (b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat))
   let bookedDays = []
-  for (const booking of state.Bookings) {
-    const start = moment(booking.from)
-    const end = moment(booking.to)
+  let conflict = false
+  for (const b of conflictableBookings) {
+    const start = moment(b.from)
+    const end = moment(b.to)
 
     while (start.isBefore(end)) {
       let exists = false
@@ -121,6 +139,9 @@ export const mapStateToProps = (state, ownProps) => {
       }
       if (!exists) {
         bookedDays.push({date: start.clone()})
+      }
+      if (b.id !== booking.id && start.isBetween(booking.start, booking.end)) {
+        conflict = true
       }
       start.add(1, 'days')
     }
@@ -151,7 +172,8 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     initialValues,
-    bookedDays
+    bookedDays,
+    conflict
   }
 }
 
