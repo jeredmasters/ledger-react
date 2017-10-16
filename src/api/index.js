@@ -8,7 +8,7 @@ export default class api {
   }
 
   static baseUrl () {
-    return 'http://api.jered.cc:8000/'
+    return 'http://api.jered.cc/'
   }
 
   static login (profile) {
