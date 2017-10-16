@@ -17,7 +17,6 @@ import Login from './containers/Login'
 
 // Styles
 import './stylesheets/main.scss'
-import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css'
 
 // Redux
 import { checkLogin } from 'store/actions/auth'
