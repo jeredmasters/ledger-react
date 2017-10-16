@@ -1,16 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
+import PropTypes from 'prop-types'
 
 class Welcome extends React.Component {
+  static propTypes = {
+    User: PropTypes.object
+  }
+  pictureUrl () {
+    return `https://graph.facebook.com/v2.9/${this.props.User.oauth_id}/picture?type=large`
+  }
+  fullName () {
+    return this.props.User.name
+  }
   render () {
     return (
       <div className="container">
         <div className="row">
           <div className="col-sm-12">
-            <h1>Hello Jered Masters, <i className="fa fa-smile-o" aria-hidden="true" /> <i className="fa fa-hand-peace-o" aria-hidden="true" /></h1>
+            <h1>Hello {this.fullName()}, <i className="fa fa-smile-o" aria-hidden="true" /> <i className="fa fa-hand-peace-o" aria-hidden="true" /></h1>
 
-            <img src="https://graph.facebook.com/v2.9/10155435663387241/picture?type=large" />
+            <img src={this.pictureUrl()} />
           </div>
         </div>
         <div className="row">
@@ -22,20 +33,20 @@ class Welcome extends React.Component {
         </div>
         <div className="row quick-links">
           <div className="col-sm-4 col-lg-3 text-center">
-            <a href="/m/calendar" className="btn btn-primary">Goto Calendar</a>
+            <Link to="/calendar" className="btn btn-primary">Goto Calendar</Link>
           </div>
           <div className="col-sm-4 col-lg-3 text-center">
-            <a href="/m/bookings?onlyMe=1" className="btn btn-info">See my Bookings</a>
+            <Link to="/bookings" className="btn btn-info">See my Bookings</Link>
           </div>
           <div className="col-sm-4 col-lg-3 text-center">
-            <a href="/m/info" className="btn btn-success">See info about the house</a>
+            <Link to="/info" className="btn btn-success">See info about the house</Link>
           </div>
         </div>
         <div className="row">
           <div className="col-sm-12">
             <br />
             <div className="well">
-              <strong>Next weekend is available! (21/10/2017)</strong>
+              <strong />
             </div>
           </div>
         </div>
@@ -47,9 +58,7 @@ class Welcome extends React.Component {
 
 export const mapStateToProps = (state, ownProps) => {
   return {
-    events: [
-
-    ]
+    User: state.User
   }
 }
 

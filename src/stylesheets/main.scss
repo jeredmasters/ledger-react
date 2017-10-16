@@ -1,4 +1,11 @@
+// vendor
 @import 'vendor/app.css';
 @import 'vendor/bootstrap.css';
 @import 'vendor/font-awesome.css';
-@import 'vendor/fullcalendar.min.css';
+
+@import '_base';
+
+// components
+@import 'components/_date-range';
+@import 'components/_label';
+@import 'components/_buttons';

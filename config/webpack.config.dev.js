@@ -67,7 +67,7 @@ module.exports = {
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(///g, '/')
+      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
@@ -94,7 +94,8 @@ module.exports = {
       'components': path.resolve(__dirname, '../src/components/'),
       'store': path.resolve(__dirname, '../src/store'),
       'stylesheets': path.resolve(__dirname, '../src/stylesheets/'),
-      'node_modules': path.resolve(__dirname, '../node_modules')
+      'node_modules': path.resolve(__dirname, '../node_modules'),
+      'src': path.resolve(__dirname, '../src/')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

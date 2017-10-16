@@ -3,26 +3,45 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 
-import BigCalendar from 'react-big-calendar'
-import moment from 'moment'
-
 import './style.scss'
 
-// Setup the localizer by providing the moment (or globalize) Object
-// to the correct localizer.
-BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+// Redux
+import { fetchBookings, startBooking, openBooking } from 'store/actions/bookings'
+
+// Components
+import EventCalendar from 'components/EventCalendar'
 
 class Calendar extends React.Component {
   static propTypes = {
-    events: PropTypes.array
+    // Redux
+    Bookings: PropTypes.array,
+    fetchBookings: PropTypes.func,
+    startBooking: PropTypes.func,
+    openBooking: PropTypes.func
+  }
+  constructor (props) {
+    super(props)
+    this.handleDayClick = this.handleDayClick.bind(this)
+    this.handleEventClick = this.handleEventClick.bind(this)
+  }
+  componentWillMount () {
+    if (this.props.Bookings === null) {
+      this.props.fetchBookings()
+    }
+  }
+  handleDayClick (day) {
+    this.props.startBooking(day)
+  }
+  handleEventClick (booking) {
+    this.props.openBooking(booking.id)
   }
   render () {
     return (
       <div>
-        <BigCalendar
-          events={this.props.events}
-          startAccessor="startDate"
-          endAccessor="endDate"
+        <EventCalendar
+          events={this.props.Bookings}
+          onDayClick={this.handleDayClick}
+          onEventClick={this.handleEventClick}
         />
       </div>
     )
@@ -30,15 +49,28 @@ class Calendar extends React.Component {
 }
 
 export const mapStateToProps = (state, ownProps) => {
+  let bookings = []
+  for (const b of state.Bookings) {
+    if (b.main) {
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-main': true} })
+    }
+    if (b.flat) {
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-flat': true} })
+    }
+    if (b.studio) {
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-studio': true} })
+    }
+  }
   return {
-    events: [
-
-    ]
+    Bookings: bookings
   }
 }
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
+    fetchBookings,
+    startBooking,
+    openBooking
   }, dispatch)
 }
 
