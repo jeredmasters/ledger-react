@@ -52,13 +52,13 @@ export const mapStateToProps = (state, ownProps) => {
   let bookings = []
   for (const b of state.Bookings) {
     if (b.main) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-main': true} })
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Main', eventClasses: {'bg-main': true} })
     }
     if (b.flat) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-flat': true} })
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Flat', eventClasses: {'bg-flat': true} })
     }
     if (b.studio) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name, eventClasses: {'bg-studio': true} })
+      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Studio', eventClasses: {'bg-studio': true} })
     }
   }
   return {

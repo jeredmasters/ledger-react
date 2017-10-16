@@ -34,6 +34,7 @@ class DateRangeField extends React.Component {
           linkedCalendars
           calendars={this.calendars()}
           specialDays={this.props.specialDays}
+          firstDayOfWeek={1}
         />
         { value !== ''
           ? <label>{value.startDate.format('D/MMM')} - {value.endDate.format('D/MMM')}:  {value.endDate.diff(value.startDate, 'days') + 1} days</label>
