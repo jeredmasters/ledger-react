@@ -41,7 +41,7 @@ class Bookings extends React.Component {
                 <tr key={booking.id} onClick={() => this.props.gotoBooking(booking.id)}>
                   <td>{booking.name}</td>
                   <td>{booking.start.format('DD MMM')}</td>
-                  <td>{booking.end.diff(booking.start, 'days')}</td>
+                  <td>{booking.end.diff(booking.start, 'days') + 1}</td>
                   <td>
                     {booking.main ? <i className="fa fa-circle c-main" aria-hidden="true" /> : <i>&nbsp;</i>}
                   </td>
