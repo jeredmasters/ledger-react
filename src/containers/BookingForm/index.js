@@ -38,12 +38,15 @@ class Booking extends React.Component {
   handleDelete () {
     this.props.deleteBooking(this.props.id)
   }
+  handleBack () {
+    window.history.back()
+  }
   render () {
     return (
       <form onSubmit={this.handleSave}>
         <div className="row">
           <div className="col-sm-12">
-            <Link to="/calendar"><i className="fa fa-chevron-left" aria-hidden="true" /> Back</Link>
+            <a href="#" onClick={this.handleBack}><i className="fa fa-chevron-left" aria-hidden="true" /> Back</a>
           </div>
         </div>
         <div className="row">

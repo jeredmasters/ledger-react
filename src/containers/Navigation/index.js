@@ -51,6 +51,13 @@ class Navigation extends React.Component {
       </div>
     )
   }
+  renderTitle () {
+    return (
+      this.props.LoggedIn
+        ? (<span><i className="fa fa-chevron-left" aria-hidden="true" /> {this.props.User.name}</span>)
+        : <span>'The Ledger'</span>
+    )
+  }
   render () {
     return (
       <nav className="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
@@ -62,7 +69,7 @@ class Navigation extends React.Component {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <Link className="navbar-brand" to="/hello">{this.props.LoggedIn ? this.props.User.name : 'The Ledger'}</Link>
+            <Link className="navbar-brand" to="/hello">{this.renderTitle()}</Link>
           </div>
           {this.props.LoggedIn
             ? this.renderLinks()

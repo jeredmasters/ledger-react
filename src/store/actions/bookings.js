@@ -1,7 +1,7 @@
 import * as Types from 'store/types'
 import api from 'src/api'
 import { push } from 'react-router-redux'
-
+import moment from 'moment'
 export const requestBookings = () => ({type: Types.REQUEST_BOOKINGS})
 export const receiveBookings = (bookings) => ({type: Types.RECEIVE_BOOKINGS, payload: bookings})
 
@@ -14,6 +14,8 @@ export const fetchBookings = () => {
         bookings[i].main = bookings[i].main === 1 || bookings[i].main === '1'
         bookings[i].flat = bookings[i].flat === 1 || bookings[i].flat === '1'
         bookings[i].studio = bookings[i].studio === 1 || bookings[i].studio === '1'
+        bookings[i].start = moment(bookings[i].from)
+        bookings[i].end = moment(bookings[i].to)
       }
       dispatch(receiveBookings(bookings))
     })
