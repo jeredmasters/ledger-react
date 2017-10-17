@@ -23,7 +23,8 @@ class Booking extends React.Component {
     id: PropTypes.any,
     saveBooking: PropTypes.func,
     handleSubmit: PropTypes.func,
-    deleteBooking: PropTypes.func
+    deleteBooking: PropTypes.func,
+    currentState: PropTypes.object
   }
   constructor (props) {
     super(props)
@@ -40,6 +41,27 @@ class Booking extends React.Component {
   }
   handleBack () {
     window.history.back()
+  }
+  renderConflicts () {
+    if (this.props.conflicts.length === 0) {
+      return (<label className="conflict-label none">no conflicts</label>)
+    }
+    if (this.props.conflicts.length === 1) {
+      const conflict = this.props.conflicts[0]
+      const current = this.props.currentState
+      const areas = []
+      if (conflict.main && current.main) { areas.push('Main') }
+      if (conflict.flat && current.flat) { areas.push('Flat') }
+      if (conflict.studio && current.studio) { areas.push('Studio') }
+      return (
+        <label className="conflict-label">booking conflict<br />
+          {conflict.name}: {areas.join(', ')}
+        </label>)
+    }
+    return (
+      <label className="conflict-label">booking conflict<br />
+        {this.props.conflicts.length} other bookings
+      </label>)
   }
   render () {
     return (
@@ -79,9 +101,7 @@ class Booking extends React.Component {
             name="dates"
             component={DateRangeField}
             specialDays={this.props.bookedDays} />
-          {this.props.conflicts.length > 0
-            ? <label className="conflict-label">booking conflict</label>
-            : null}
+          {this.renderConflicts()}
         </div>
         <div className="row">
           <div className="col-xs-12">
@@ -138,12 +158,25 @@ export const mapStateToProps = (state, ownProps) => {
     end: selector(state, 'dates.endDate')
   }
 
-  const conflictableBookings = state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
+  const prev = window.prev
+  if (prev === undefined || prev.main !== booking.main || prev.flat !== booking.flat || prev.studio !== booking.studio) {
+    window.prev = {
+      main: booking.main,
+      flat: booking.flat,
+      studio: booking.studio,
+      conflictableBookings: state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
+    }
+  }
+  const conflictableBookings = window.prev.conflictableBookings
   let bookedDays = []
   let conflicts = []
   for (const b of conflictableBookings) {
     bookedDays = bookedDays.concat(b.days)
-    if (booking.start !== null && (booking.start.isBetween(b.start, b.end) || booking.end.isBetween(b.start, b.end))) {
+    if (booking.start !== null && (
+      booking.start.isBetween(b.start, b.end) ||
+      booking.end.isBetween(b.start, b.end) ||
+      b.start.isBetween(booking.start, booking.end)
+    )) {
       conflicts.push(b)
     }
   }
@@ -154,7 +187,10 @@ export const mapStateToProps = (state, ownProps) => {
       id: 'new',
       name: state.User.name,
       type: 2,
-      dates: null,
+      dates: {
+        startDate: state.BookingStart,
+        endDate: state.BookingStart.clone().add(1, 'days')
+      },
       main: true,
       flat: true,
       studio: true
@@ -171,7 +207,8 @@ export const mapStateToProps = (state, ownProps) => {
   return {
     initialValues,
     bookedDays,
-    conflicts
+    conflicts,
+    currentState: booking
   }
 }
 

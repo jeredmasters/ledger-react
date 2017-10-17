@@ -8,4 +8,9 @@ label{
   text-align: center;
   padding: 5px;
   border: 6px solid #ca0909;
+  &.none{
+    background: #FFF;
+    color: #43a512;
+    border: 6px solid #fff;
+  }
 }
