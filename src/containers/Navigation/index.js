@@ -55,7 +55,7 @@ class Navigation extends React.Component {
     return (
       this.props.LoggedIn
         ? (<span><i className="fa fa-chevron-left" aria-hidden="true" /> {this.props.User.name}</span>)
-        : <span>'The Ledger'</span>
+        : <span>The Ledger</span>
     )
   }
   render () {

@@ -9,6 +9,7 @@ export const fetchBookings = () => {
   return (dispatch) => {
     dispatch(requestBookings())
     api.get('b/bookings').then((responseBody) => {
+      const today = moment()
       const bookings = responseBody.data
       for (let i = 0; i < bookings.length; i++) {
         bookings[i].main = bookings[i].main === 1 || bookings[i].main === '1'
@@ -17,7 +18,7 @@ export const fetchBookings = () => {
         bookings[i].start = moment(bookings[i].from)
         bookings[i].end = moment(bookings[i].to)
       }
-      dispatch(receiveBookings(bookings))
+      dispatch(receiveBookings(bookings.filter(b => b.end.isAfter(today))))
     })
   }
 }
