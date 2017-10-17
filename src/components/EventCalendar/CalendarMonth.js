@@ -56,7 +56,7 @@ class EventCalendar extends React.Component {
     for (let i = -startPad; i < count + endPad; i++) {
       days.push({
         moment: this.monthStart.clone().add(i, 'days'),
-        siblingMonth: i < 0 || i > count,
+        siblingMonth: i < 0 || i >= count,
         eventSlots: Array(this.props.maxEventSlots).fill(false)
       })
     }
