@@ -27,3 +27,7 @@ export const bookingStartReducer = (state = null, action) => {
       return state
   }
 }
+
+export const conflictableBookingReducer = () => {
+
+}

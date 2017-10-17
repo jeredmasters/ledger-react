@@ -16,7 +16,7 @@ import { saveBooking, deleteBooking } from 'store/actions/bookings'
 
 class Booking extends React.Component {
   static propTypes = {
-    conflict: PropTypes.bool,
+    conflicts: PropTypes.array,
 
     // Redux
     bookedDays: PropTypes.array,
@@ -79,7 +79,7 @@ class Booking extends React.Component {
             name="dates"
             component={DateRangeField}
             specialDays={this.props.bookedDays} />
-          {this.props.conflict
+          {this.props.conflicts.length > 0
             ? <label className="conflict-label">booking conflict</label>
             : null}
         </div>
@@ -115,7 +115,7 @@ class Booking extends React.Component {
           <div className="col-sm-12 text-right">
             <Link to="/calendar" className="btn btn-default">Cancel</Link>
             {this.props.id !== 'new' ? <span className="btn btn-danger" onClick={this.handleDelete}>Delete</span> : null}
-            <input className="btn btn-primary" type="submit" value="Save" disabled={this.props.conflict} />
+            <input className="btn btn-primary" type="submit" value="Save" disabled={this.props.conflicts.length > 0} />
           </div>
         </div>
       </form>
@@ -140,23 +140,11 @@ export const mapStateToProps = (state, ownProps) => {
 
   const conflictableBookings = state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
   let bookedDays = []
-  let conflict = false
+  let conflicts = []
   for (const b of conflictableBookings) {
-    const start = moment(b.from)
-    const end = moment(b.to)
-
-    while (start.isBefore(end)) {
-      let exists = false
-      for (const d of bookedDays) {
-        if (d.date.isSame(start)) { exists = true }
-      }
-      if (!exists) {
-        bookedDays.push({date: start.clone()})
-      }
-      if (start.isBetween(booking.start, booking.end)) {
-        conflict = true
-      }
-      start.add(1, 'days')
+    bookedDays = bookedDays.concat(b.days)
+    if (booking.start !== null && (booking.start.isBetween(b.start, b.end) || booking.end.isBetween(b.start, b.end))) {
+      conflicts.push(b)
     }
   }
 
@@ -166,10 +154,7 @@ export const mapStateToProps = (state, ownProps) => {
       id: 'new',
       name: state.User.name,
       type: 2,
-      dates: {
-        startDate: state.BookingStart,
-        endDate: state.BookingStart.clone().add(1, 'days')
-      },
+      dates: null,
       main: true,
       flat: true,
       studio: true
@@ -186,7 +171,7 @@ export const mapStateToProps = (state, ownProps) => {
   return {
     initialValues,
     bookedDays,
-    conflict
+    conflicts
   }
 }
 

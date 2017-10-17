@@ -17,6 +17,13 @@ export const fetchBookings = () => {
         bookings[i].studio = bookings[i].studio === 1 || bookings[i].studio === '1'
         bookings[i].start = moment(bookings[i].from)
         bookings[i].end = moment(bookings[i].to)
+
+        const loop = bookings[i].start.clone()
+        bookings[i].days = []
+        while (loop.isBefore(bookings[i].end)) {
+          bookings[i].days.push({date: loop.clone()})
+          loop.add(1, 'days')
+        }
       }
       dispatch(receiveBookings(bookings.filter(b => b.end.isAfter(today))))
     })
