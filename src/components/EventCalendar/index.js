@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import Swipeable from 'react-swipeable'
 
 // Components
 import CalendarMonth from './CalendarMonth'
@@ -29,7 +30,7 @@ class EventCalendar extends React.Component {
   }
   render () {
     return (
-      <div>
+      <Swipeable onSwipedLeft={this.onNext} onSwipedRight={this.onPrev}>
         <div className="calendar-title">
           <h3>{this.state.month.format('MMMM YYYY')}</h3>
           <div className="calendar-controls">
@@ -44,7 +45,7 @@ class EventCalendar extends React.Component {
           onDayClick={this.props.onDayClick}
           onEventClick={this.props.onEventClick}
         />
-      </div>
+      </Swipeable>
     )
   }
 }
