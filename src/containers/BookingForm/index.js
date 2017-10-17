@@ -134,7 +134,7 @@ export const mapStateToProps = (state, ownProps) => {
     end: selector(state, 'dates.endDate')
   }
 
-  const conflictableBookings = state.Bookings.filter(b => (b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat))
+  const conflictableBookings = state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
   let bookedDays = []
   let conflict = false
   for (const b of conflictableBookings) {
@@ -149,7 +149,7 @@ export const mapStateToProps = (state, ownProps) => {
       if (!exists) {
         bookedDays.push({date: start.clone()})
       }
-      if (b.id !== booking.id && start.isBetween(booking.start, booking.end)) {
+      if (start.isBetween(booking.start, booking.end)) {
         conflict = true
       }
       start.add(1, 'days')
