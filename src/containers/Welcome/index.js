@@ -33,13 +33,13 @@ class Welcome extends React.Component {
         </div>
         <div className="row quick-links">
           <div className="col-sm-4 col-lg-3 text-center">
-            <Link to="/calendar" className="btn btn-primary">Goto Calendar</Link>
+            <Link to="/calendar" className="btn btn-primary">Goto Calendar <i className="fa fa-calendar" aria-hidden="true" /></Link>
           </div>
           <div className="col-sm-4 col-lg-3 text-center">
-            <Link to="/bookings" className="btn btn-info">See my Bookings</Link>
+            <Link to="/bookings" className="btn btn-info">See my Bookings <i className="fa fa-list" aria-hidden="true" /></Link>
           </div>
           <div className="col-sm-4 col-lg-3 text-center">
-            <Link to="/info" className="btn btn-success">See info about the house</Link>
+            <Link to="/info" className="btn btn-success">See info about the house <i className="fa fa-info-circle" aria-hidden="true" /></Link>
           </div>
         </div>
         <div className="row">

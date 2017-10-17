@@ -12,9 +12,13 @@ export default class api {
   }
 
   static login (profile) {
-    return this.post('login', {profile}).then((responseBody) => {
+    const promise = this.post('login', {profile})
+
+    promise.then((responseBody) => {
       cookie.save('token', responseBody.token)
     })
+
+    return promise
   }
 
   static checkLogin () {

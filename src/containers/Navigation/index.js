@@ -9,18 +9,21 @@ class Navigation extends React.Component {
     LoggedIn: PropTypes.bool,
     User: PropTypes.object
   }
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      open: false
+    }
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick () {
+    this.setState({open: !this.state.open})
+  }
   renderLinks () {
-    return (<div className="container">
-      <div className="navbar-header">
-        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span className="sr-only">Toggle navigation</span>
-          <span className="icon-bar" />
-          <span className="icon-bar" />
-          <span className="icon-bar" />
-        </button>
-        <Link className="navbar-brand" to="/hello">{this.props.User.name}</Link>
-      </div>
-      <div id="navbar" className="navbar-collapse collapse">
+    return (
+      <div id="navbar" className="navbar-collapse collapse in" style={{transition: '0.5s ease height', height: (this.state.open ? '220px' : '1px')}}>
         <ul className="nav navbar-nav">
           <li><Link to="/calendar">Calendar</Link></li>
           <li><Link to="/bookings">Bookings</Link></li>
@@ -38,30 +41,25 @@ class Navigation extends React.Component {
           <li><Link to="/login/facebook/logout">Logout</Link></li>
         </ul>
       </div>
-      <div className="collapse navbar-collapse" id="navbarsExampleDefault" />
-    </div>)
-  }
-  renderEmpty () {
-    return (
-      <div className="container">
-        <div className="navbar-header">
-          <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span className="sr-only">Toggle navigation</span>
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-            <span className="icon-bar" />
-          </button>
-          <Link className="navbar-brand" to="/hello">The Ledger</Link>
-        </div>
-      </div>
     )
   }
   render () {
     return (
       <nav className="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-        {this.props.LoggedIn
-          ? this.renderLinks()
-          : this.renderEmpty()}
+        <div className="container">
+          <div className="navbar-header">
+            <button type="button" className="navbar-toggle collapsed" onClick={this.handleClick}>
+              <span className="sr-only">Toggle navigation</span>
+              <span className="icon-bar" />
+              <span className="icon-bar" />
+              <span className="icon-bar" />
+            </button>
+            <Link className="navbar-brand" to="/hello">{this.props.LoggedIn ? this.props.User.name : 'The Ledger'}</Link>
+          </div>
+          {this.props.LoggedIn
+            ? this.renderLinks()
+            : null}
+        </div>
       </nav>
     )
   }
