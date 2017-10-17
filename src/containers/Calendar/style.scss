@@ -102,11 +102,11 @@ html {
 }
 @media  (max-width: 992px){
   .day .event-slot {
-    min-height: 21px;
+    min-height: 17px;
     margin-top: 1px;
     margin: 0;
   }
   .day .event-slot .event-title {
-    top:1px;
+    top:-1px;
   }
 }
