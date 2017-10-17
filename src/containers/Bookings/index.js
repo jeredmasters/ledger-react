@@ -20,10 +20,11 @@ class Bookings extends React.Component {
   render () {
     return (
       <div>
+        <h1>Under Construction</h1>
         <table>
           <tbody>
             {this.props.Bookings.map((booking) => (
-              <tr>
+              <tr key={booking.id}>
                 <td>{booking.title}</td>
               </tr>
             ))}

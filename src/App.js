@@ -14,6 +14,7 @@ import Calendar from './containers/Calendar'
 import Bookings from './containers/Bookings'
 import BookingForm from './containers/BookingForm'
 import Login from './containers/Login'
+import Info from './containers/Info'
 
 // Styles
 import './stylesheets/main.scss'
@@ -53,6 +54,7 @@ class App extends Component {
               <Route path="/calendar" render={props => (this.authenticated() ? (<Calendar />) : (<Redirect to={{pathname: '/'}} />))} />
               <Route path="/bookings" render={props => (this.authenticated() ? (<Bookings />) : (<Redirect to={{pathname: '/'}} />))} />
               <Route path="/booking/:id" render={({match}) => (this.authenticated() ? (<BookingForm id={match.params.id} />) : (<Redirect to={{pathname: '/'}} />))} />
+              <Route path="/info" render={props => (this.authenticated() ? (<Info />) : (<Redirect to={{pathname: '/'}} />))} />
             </div>
           </div>
         </ConnectedRouter>
