@@ -30,9 +30,9 @@ class Bookings extends React.Component {
               <th>Name</th>
               <th>Start</th>
               <th>Days</th>
-              <th />
-              <th />
-              <th />
+              <th>M</th>
+              <th>F</th>
+              <th>S</th>
             </tr>
           </thead>
           <tbody>
