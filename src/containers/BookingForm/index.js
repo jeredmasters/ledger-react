@@ -42,9 +42,18 @@ class Booking extends React.Component {
     return (
       <form onSubmit={this.handleSave}>
         <div className="row">
+          <div className="col-sm-12">
+            <Link to="/calendar"><i className="fa fa-chevron-left" aria-hidden="true" /> Back</Link>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <label>Name</label>
+          </div>
+        </div>
+        <div className="row">
           <div className="col-sm-3">
             <div className="form-group">
-              <label>Name {this.props.id}</label>
               <Field
                 name="name"
                 className="form-control"
