@@ -71,6 +71,7 @@ class Booking extends React.Component {
         </div>
         <div className="form-group">
           <label>Dates</label>
+          <span>The calendar below only shows conflicts for the areas you've selected; main/flat/studio</span>
           <Field
             name="dates"
             component={DateRangeField}
