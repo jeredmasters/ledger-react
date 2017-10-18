@@ -10,6 +10,7 @@ import { fetchBookings, startBooking, openBooking } from 'store/actions/bookings
 
 // Components
 import EventCalendar from 'components/EventCalendar'
+import Loading from 'components/Loading'
 
 class Calendar extends React.Component {
   static propTypes = {
@@ -17,7 +18,8 @@ class Calendar extends React.Component {
     Bookings: PropTypes.array,
     fetchBookings: PropTypes.func,
     startBooking: PropTypes.func,
-    openBooking: PropTypes.func
+    openBooking: PropTypes.func,
+    Ready: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -36,6 +38,10 @@ class Calendar extends React.Component {
     this.props.openBooking(booking.id)
   }
   render () {
+    if (!this.props.Ready) {
+      return (<Loading />)
+    }
+
     return (
       <div>
         <EventCalendar
@@ -50,19 +56,22 @@ class Calendar extends React.Component {
 
 export const mapStateToProps = (state, ownProps) => {
   let bookings = []
-  for (const b of state.Bookings) {
-    if (b.main) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Main', eventClasses: {'bg-main': true} })
-    }
-    if (b.flat) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Flat', eventClasses: {'bg-flat': true} })
-    }
-    if (b.studio) {
-      bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Studio', eventClasses: {'bg-studio': true} })
+  if (state.Bookings !== null) {
+    for (const b of state.Bookings) {
+      if (b.main) {
+        bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Main', eventClasses: {'bg-main': true} })
+      }
+      if (b.flat) {
+        bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Flat', eventClasses: {'bg-flat': true} })
+      }
+      if (b.studio) {
+        bookings.push({ id: b.id, start: b.from, end: b.to, title: b.name + ' - Studio', eventClasses: {'bg-studio': true} })
+      }
     }
   }
   return {
-    Bookings: bookings
+    Bookings: bookings,
+    Ready: state.Bookings !== null
   }
 }
 

@@ -8,12 +8,16 @@ import { push } from 'react-router-redux'
 // Redux
 import { fetchBookings } from 'store/actions/bookings'
 
+// Components
+import Loading from 'components/Loading'
+
 class Bookings extends React.Component {
   static propTypes = {
     // Redux
     Bookings: PropTypes.array,
     fetchBookings: PropTypes.func,
-    gotoBooking: PropTypes.func
+    gotoBooking: PropTypes.func,
+    Ready: PropTypes.bool
   }
   componentWillMount () {
     if (this.props.Bookings === null) {
@@ -21,6 +25,9 @@ class Bookings extends React.Component {
     }
   }
   render () {
+    if (!this.props.Ready) {
+      return (<Loading />)
+    }
     return (
       <div>
         <h2>Bookings</h2>
@@ -63,7 +70,8 @@ class Bookings extends React.Component {
 export const mapStateToProps = (state, ownProps) => {
   const today = moment()
   return {
-    Bookings: state.Bookings.filter(b => b.end.isAfter(today)).sort((a, b) => (a.start.isAfter(b.start)))
+    Bookings: state.Bookings.filter(b => b.end.isAfter(today)).sort((a, b) => (a.start.isAfter(b.start))),
+    Ready: state.Bookings !== null
   }
 }
 

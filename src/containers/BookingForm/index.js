@@ -10,6 +10,7 @@ import moment from 'moment'
 // Components
 import DateRangeField from '../../components/Fields/DateRangeField'
 import Checkbox from 'components/Fields/Checkbox'
+import Loading from 'components/Loading'
 
 // Redux
 import { saveBooking, deleteBooking } from 'store/actions/bookings'
@@ -24,7 +25,8 @@ class Booking extends React.Component {
     saveBooking: PropTypes.func,
     handleSubmit: PropTypes.func,
     deleteBooking: PropTypes.func,
-    currentState: PropTypes.object
+    currentState: PropTypes.object,
+    Ready: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -64,6 +66,9 @@ class Booking extends React.Component {
       </label>)
   }
   render () {
+    if (!this.props.Ready) {
+      return (<Loading />)
+    }
     return (
       <form onSubmit={this.handleSave}>
         <div className="row">
@@ -164,20 +169,24 @@ export const mapStateToProps = (state, ownProps) => {
       main: booking.main,
       flat: booking.flat,
       studio: booking.studio,
+      bookedDays: [],
       conflictableBookings: state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
     }
+    for (const b of window.prev.conflictableBookings) {
+      window.prev.bookedDays = window.prev.bookedDays.concat(b.days)
+    }
   }
-  const conflictableBookings = window.prev.conflictableBookings
-  let bookedDays = []
+
   let conflicts = []
-  for (const b of conflictableBookings) {
-    bookedDays = bookedDays.concat(b.days)
-    if (booking.start !== null && (
-      booking.start.isBetween(b.start, b.end) ||
-      booking.end.isBetween(b.start, b.end) ||
-      b.start.isBetween(booking.start, booking.end)
-    )) {
-      conflicts.push(b)
+  if (booking.start !== null) {
+    for (const b of window.prev.conflictableBookings) {
+      if  (
+        booking.start.isBetween(b.start, b.end) ||
+        booking.end.isBetween(b.start, b.end) ||
+        b.start.isBetween(booking.start, booking.end)
+      ) {
+        conflicts.push(b)
+      }
     }
   }
 
@@ -206,9 +215,10 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     initialValues,
-    bookedDays,
+    bookedDays: window.prev.bookedDays,
     conflicts,
-    currentState: booking
+    currentState: booking,
+    Ready: state.Bookings !== null
   }
 }
 
