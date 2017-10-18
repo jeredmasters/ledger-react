@@ -22,8 +22,11 @@ class EventCalendar extends React.Component {
       month: moment()
     }
   }
+  prevAllowed () {
+    return this.state.month.month() > moment().month() || this.state.month.year() > moment().year()
+  }
   onPrev () {
-    if (this.state.month.month() > moment().month() && this.state.month.year() >= moment().year()) {
+    if (this.prevAllowed()) {
       this.setState({month: this.state.month.add(-1, 'month')})
     }
   }
@@ -36,7 +39,7 @@ class EventCalendar extends React.Component {
         <div className="calendar-title">
           <h3>{this.state.month.format('MMMM YYYY')}</h3>
           <div className="calendar-controls">
-            <span className="btn btn-info" onClick={this.onPrev} disabled={this.state.month.month() <= moment().month()}><i className="fa fa-chevron-left" aria-hidden="true" /> Prev</span>
+            <span className="btn btn-info" onClick={this.onPrev} disabled={!this.prevAllowed()}><i className="fa fa-chevron-left" aria-hidden="true" /> Prev</span>
             <span className="btn btn-info pull-right" onClick={this.onNext}>Next <i className="fa fa-chevron-right" aria-hidden="true" /></span>
           </div>
         </div>
