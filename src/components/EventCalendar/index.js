@@ -23,7 +23,7 @@ class EventCalendar extends React.Component {
     }
   }
   onPrev () {
-    if (this.state.month.month() > moment().month()) {
+    if (this.state.month.month() > moment().month() && this.state.month.year() >= moment().year()) {
       this.setState({month: this.state.month.add(-1, 'month')})
     }
   }
