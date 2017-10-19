@@ -23,7 +23,7 @@ class DateRangeField extends React.Component {
     return parseInt(c)
   }
   handleChange (val) {
-    this.input.onChange(val)
+    this.props.input.onChange(val)
   }
   render () {
     const {input} = this.props

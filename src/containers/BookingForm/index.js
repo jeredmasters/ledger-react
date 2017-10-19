@@ -147,6 +147,8 @@ const BookingForm = reduxForm({
 })(Booking)
 
 export const mapStateToProps = (state, ownProps) => {
+  let initialValues = null
+  let conflicts = []
   const selector = formValueSelector('BookingForm')
   const booking = {
     id: selector(state, 'id'),
@@ -157,59 +159,59 @@ export const mapStateToProps = (state, ownProps) => {
     end: selector(state, 'dates.endDate')
   }
 
-  const prev = window.prev
-  if (prev === undefined || prev.main !== booking.main || prev.flat !== booking.flat || prev.studio !== booking.studio) {
-    window.prev = {
-      main: booking.main,
-      flat: booking.flat,
-      studio: booking.studio,
-      bookedDays: [],
-      conflictableBookings: state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
-    }
-    for (const b of window.prev.conflictableBookings) {
-      window.prev.bookedDays = window.prev.bookedDays.concat(b.days)
-    }
-  }
-
-  let conflicts = []
-  if (booking.start !== null) {
-    for (const b of window.prev.conflictableBookings) {
-      if  (
-        booking.start.isBetween(b.start, b.end) ||
-        booking.end.isBetween(b.start, b.end) ||
-        b.start.isBetween(booking.start, booking.end)
-      ) {
-        conflicts.push(b)
+  if (state.Bookings !== null) {
+    const prev = window.prev
+    if (prev === undefined || prev.main !== booking.main || prev.flat !== booking.flat || prev.studio !== booking.studio) {
+      window.prev = {
+        main: booking.main,
+        flat: booking.flat,
+        studio: booking.studio,
+        bookedDays: [],
+        conflictableBookings: state.Bookings.filter(b => b.id !== booking.id && ((b.main && booking.main) || (b.studio && booking.studio) || (b.flat && booking.flat)))
+      }
+      for (const b of window.prev.conflictableBookings) {
+        window.prev.bookedDays = window.prev.bookedDays.concat(b.days)
       }
     }
-  }
 
-  let initialValues = null
-  if (ownProps.id === 'new') {
-    initialValues = {
-      id: 'new',
-      name: state.User.name,
-      type: 2,
-      dates: {
-        startDate: state.BookingStart,
-        endDate: state.BookingStart.clone().add(1, 'days')
-      },
-      main: true,
-      flat: true,
-      studio: true
+    if (booking.start !== null) {
+      for (const b of window.prev.conflictableBookings) {
+        if  (
+          booking.start.isBetween(b.start, b.end) ||
+        booking.end.isBetween(b.start, b.end) ||
+        b.start.isBetween(booking.start, booking.end)
+        ) {
+          conflicts.push(b)
+        }
+      }
     }
-  } else {
-    const booking = state.Bookings.find(b => b.id === parseInt(ownProps.id))
-    initialValues = booking
-    initialValues.dates =  {
-      startDate: moment(booking.from),
-      endDate: moment(booking.to)
+
+    if (ownProps.id === 'new') {
+      initialValues = {
+        id: 'new',
+        name: state.User.name,
+        type: 2,
+        dates: state.BookingStart !== null ? {
+          startDate: state.BookingStart,
+          endDate: state.BookingStart.clone().add(1, 'days')
+        } : null,
+        main: true,
+        flat: true,
+        studio: true
+      }
+    } else {
+      const booking = state.Bookings.find(b => b.id === parseInt(ownProps.id))
+      initialValues = booking
+      initialValues.dates =  {
+        startDate: moment(booking.from),
+        endDate: moment(booking.to)
+      }
     }
   }
 
   return {
     initialValues,
-    bookedDays: window.prev.bookedDays,
+    bookedDays: (window.prev !== undefined ? window.prev.bookedDays : []),
     conflicts,
     currentState: booking,
     Ready: state.Bookings !== null
