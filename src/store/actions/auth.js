@@ -22,6 +22,8 @@ export const checkLogin = () => {
         dispatch(receiveLogin(responseBody.user))
         dispatch(fetchBookings())
         setTimeout(() => dispatch(push('/hello')), 500)
+      } else {
+        dispatch(receiveLogin(false))
       }
     })
   }

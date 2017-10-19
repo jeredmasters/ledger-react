@@ -7,7 +7,10 @@ class DateRangeField extends React.Component {
   static propTypes = {
     specialDays: PropTypes.any
   }
-  handleSelect (date) {
+  constructor (props) {
+    super(props)
+
+    this.handleChange = this.handleChange.bind(this)
   }
   calendars () {
     const c = window.innerWidth / 300
@@ -19,7 +22,9 @@ class DateRangeField extends React.Component {
     }
     return parseInt(c)
   }
-
+  handleChange (val) {
+    this.input.onChange(val)
+  }
   render () {
     const {input} = this.props
     const {value, ...inputField} = input
@@ -30,7 +35,7 @@ class DateRangeField extends React.Component {
           {...inputField}
           startDate={value.startDate}
           endDate={value.endDate}
-          onChange={(val) => input.onChange(val)}
+          onChange={this.handleChange}
           linkedCalendars
           calendars={this.calendars()}
           specialDays={this.props.specialDays}

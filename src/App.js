@@ -16,6 +16,9 @@ import BookingForm from './containers/BookingForm'
 import Login from './containers/Login'
 import Info from './containers/Info'
 
+// Components
+import Loading from 'components/Loading'
+
 // Styles
 import './stylesheets/main.scss'
 
@@ -27,7 +30,8 @@ class App extends Component {
     User: PropTypes.any,
 
     // Redux
-    checkLogin: PropTypes.func
+    checkLogin: PropTypes.func,
+    Ready: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -38,10 +42,13 @@ class App extends Component {
     this.props.checkLogin()
   }
   authenticated () {
-    return this.props.User !== null
+    return this.props.User !== false
   }
 
   render () {
+    if (!this.props.Ready) {
+      return (<Loading />)
+    }
     return (
       <div className="App">
         <Alert />
@@ -65,7 +72,8 @@ class App extends Component {
 
 export const mapStateToProps = (state, ownProps) => {
   return {
-    User: state.User
+    User: state.User,
+    Ready: state.User !== null
   }
 }
 

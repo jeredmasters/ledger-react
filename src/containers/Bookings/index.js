@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { push } from 'react-router-redux'
 
 // Redux
@@ -10,6 +9,7 @@ import { fetchBookings } from 'store/actions/bookings'
 
 // Components
 import Loading from 'components/Loading'
+import Back from 'components/Form/Back'
 
 class Bookings extends React.Component {
   static propTypes = {
@@ -17,20 +17,51 @@ class Bookings extends React.Component {
     Bookings: PropTypes.array,
     fetchBookings: PropTypes.func,
     gotoBooking: PropTypes.func,
-    Ready: PropTypes.bool
+    Ready: PropTypes.bool,
+    User: PropTypes.object
+  }
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      onlyMe: true
+    }
+
+    this.handleFilter = this.handleFilter.bind(this)
   }
   componentWillMount () {
     if (this.props.Bookings === null) {
       this.props.fetchBookings()
     }
   }
+  handleFilter (event) {
+    this.setState({onlyMe: event.target.checked})
+  }
   render () {
     if (!this.props.Ready) {
       return (<Loading />)
     }
+    const bookings = (
+      this.state.onlyMe
+        ? this.props.Bookings.filter(b => b.user_id === this.props.User.id)
+        : this.props.Bookings
+    ).sort((a, b) => (a.start.isAfter(b.start)))
+
     return (
       <div>
-        <h2>Bookings</h2>
+        <Back />
+        <div className="row">
+          <div className="col-xs-6">
+            <h2>Bookings</h2>
+          </div>
+          <form className="col-xs-6 form-inline">
+            <div className="form-group">
+              <label>Only show my bookings <input type="checkbox" onChange={this.handleFilter} checked={this.state.onlyMe} /></label>
+
+            </div>
+          </form>
+        </div>
+
         <table className="table table-striped">
           <thead>
             <tr>
@@ -43,7 +74,7 @@ class Bookings extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.Bookings.map((booking) => {
+            {bookings.map((booking) => {
               return (
                 <tr key={booking.id} onClick={() => this.props.gotoBooking(booking.id)}>
                   <td>{booking.name}</td>
@@ -68,9 +99,9 @@ class Bookings extends React.Component {
 }
 
 export const mapStateToProps = (state, ownProps) => {
-  const today = moment()
   return {
-    Bookings: state.Bookings.filter(b => b.end.isAfter(today)).sort((a, b) => (a.start.isAfter(b.start))),
+    Bookings: state.Bookings,
+    User: state.User,
     Ready: state.Bookings !== null
   }
 }

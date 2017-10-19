@@ -11,6 +11,7 @@ import { fetchBookings, startBooking, openBooking } from 'store/actions/bookings
 // Components
 import EventCalendar from 'components/EventCalendar'
 import Loading from 'components/Loading'
+import Back from 'components/Form/Back'
 
 class Calendar extends React.Component {
   static propTypes = {
@@ -44,6 +45,7 @@ class Calendar extends React.Component {
 
     return (
       <div>
+        <Back />
         <EventCalendar
           events={this.props.Bookings}
           onDayClick={this.handleDayClick}

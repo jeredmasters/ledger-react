@@ -11,6 +11,7 @@ import moment from 'moment'
 import DateRangeField from '../../components/Fields/DateRangeField'
 import Checkbox from 'components/Fields/Checkbox'
 import Loading from 'components/Loading'
+import Back from 'components/Form/Back'
 
 // Redux
 import { saveBooking, deleteBooking } from 'store/actions/bookings'
@@ -41,9 +42,6 @@ class Booking extends React.Component {
   handleDelete () {
     this.props.deleteBooking(this.props.id)
   }
-  handleBack () {
-    window.history.back()
-  }
   renderConflicts () {
     if (this.props.conflicts.length === 0) {
       return (<label className="conflict-label none">no conflicts</label>)
@@ -71,11 +69,7 @@ class Booking extends React.Component {
     }
     return (
       <form onSubmit={this.handleSave}>
-        <div className="row">
-          <div className="col-sm-12">
-            <a href="#" onClick={this.handleBack}><i className="fa fa-chevron-left" aria-hidden="true" /> Back</a>
-          </div>
-        </div>
+        <Back />
         <div className="row">
           <div className="col-sm-12">
             <label>Name</label>

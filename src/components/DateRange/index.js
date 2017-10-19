@@ -108,16 +108,54 @@ class DateRange extends Component {
     }
   }
 
-  render () {
-    const { ranges, format, linkedCalendars, style, calendars, firstDayOfWeek, minDate, maxDate, classNames, onlyClasses, specialDays, lang, disableDaysBeforeToday, offsetPositive, shownDate, showMonthArrow, rangedCalendars } = this.props
-    const { range, link } = this.state
+  renderCalendars () {
+    const { format, linkedCalendars, calendars, classNames, firstDayOfWeek, minDate, maxDate, onlyClasses, specialDays, lang, disableDaysBeforeToday, offsetPositive, shownDate, showMonthArrow, rangedCalendars } = this.props
     const { styles } = this
-
-    const classes = { ...defaultClasses, ...classNames }
+    const { range, link } = this.state
     const yearsDiff = range.endDate.year() - range.startDate.year()
     const monthsDiff = range.endDate.month() - range.startDate.month()
     const diff = yearsDiff * 12 + monthsDiff
     const calendarsCount = Number(calendars) - 1
+    const classes = { ...defaultClasses, ...classNames }
+
+    const _calendars = []
+    const _method = offsetPositive ? 'unshift' : 'push'
+    for (var i = calendarsCount; i >= 0; i--) {
+      const offset = offsetPositive ? i : -i
+      const realDiff = offsetPositive ? diff : -diff
+      const realOffset = (rangedCalendars && i === calendarsCount && diff !== 0) ? realDiff : offset
+
+      _calendars[_method](
+        <Calendar
+          showMonthArrow={showMonthArrow}
+          shownDate={shownDate}
+          disableDaysBeforeToday={disableDaysBeforeToday}
+          lang={lang}
+          key={i}
+          offset={realOffset}
+          link={linkedCalendars && link}
+          linkCB={this.handleLinkChange}
+          range={range}
+          format={format}
+          firstDayOfWeek={firstDayOfWeek}
+          theme={styles}
+          minDate={minDate}
+          maxDate={maxDate}
+          onlyClasses={onlyClasses}
+          specialDays={specialDays}
+          classNames={classes}
+          onChange={this.handleSelect}  />
+      )
+    }
+    return _calendars
+  }
+
+  render () {
+    const { ranges, format, style, classNames, onlyClasses } = this.props
+    const { range } = this.state
+    const { styles } = this
+
+    const classes = { ...defaultClasses, ...classNames }
 
     return (
       <div style={onlyClasses ? undefined : { ...styles['DateRange'], ...style }} className={classes.dateRange}>
@@ -132,38 +170,7 @@ class DateRange extends Component {
             classNames={classes} />
         )}
 
-        {(() => {
-          const _calendars = []
-          const _method = offsetPositive ? 'unshift' : 'push'
-          for (var i = calendarsCount; i >= 0; i--) {
-            const offset = offsetPositive ? i : -i
-            const realDiff = offsetPositive ? diff : -diff
-            const realOffset = (rangedCalendars && i === calendarsCount && diff !== 0) ? realDiff : offset
-
-            _calendars[_method](
-              <Calendar
-                showMonthArrow={showMonthArrow}
-                shownDate={shownDate}
-                disableDaysBeforeToday={disableDaysBeforeToday}
-                lang={lang}
-                key={i}
-                offset={realOffset}
-                link={linkedCalendars && link}
-                linkCB={this.handleLinkChange}
-                range={range}
-                format={format}
-                firstDayOfWeek={firstDayOfWeek}
-                theme={styles}
-                minDate={minDate}
-                maxDate={maxDate}
-                onlyClasses={onlyClasses}
-                specialDays={specialDays}
-                classNames={classes}
-                onChange={this.handleSelect}  />
-            )
-          }
-          return _calendars
-        })()}
+        {this.renderCalendars()}
       </div>
     )
   }

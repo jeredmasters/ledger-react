@@ -1,6 +1,7 @@
 // vendor
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 import createHistory from 'history/createBrowserHistory'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
@@ -25,7 +26,7 @@ const reducers = combineReducers({
 let store = createStore(
   reducers,
   {User: null},
-  applyMiddleware(thunkMiddleware, middleware),
+  applyMiddleware(thunkMiddleware, middleware, createLogger()),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
