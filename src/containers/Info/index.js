@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 // import PropTypes from 'prop-types'
 
 // Redux
@@ -10,7 +11,12 @@ class Info extends React.Component {
   render () {
     return (
       <div>
-        <h1>Under Construction</h1>
+        <h1>House Info</h1>
+        <div className="row quick-links">
+          <div className="col-sm-4 col-lg-3 text-center">
+            <Link to="/info/cleanup" className="btn btn-primary">Cleaning up</Link>
+          </div>
+        </div>
       </div>
     )
   }

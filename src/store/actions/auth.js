@@ -15,7 +15,7 @@ export const pushLogin = (profile) => {
   }
 }
 
-export const checkLogin = () => {
+export const checkLoginHost = () => {
   return (dispatch) => {
     api.checkLogin().then((responseBody) => {
       if (responseBody.user !== null && responseBody.user !== undefined) {

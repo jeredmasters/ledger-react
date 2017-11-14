@@ -15,7 +15,10 @@ export default class api {
     const promise = this.post('login', {profile})
 
     promise.then((responseBody) => {
-      cookie.save('token', responseBody.token)
+      cookie.save('token', responseBody.token, {
+        expires: new Date('2150-01-01 01:01:01')
+        // don't really give a shit, just don't expire
+      })
     })
 
     return promise

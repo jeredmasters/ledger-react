@@ -15,6 +15,8 @@ import Bookings from './containers/Bookings'
 import BookingForm from './containers/BookingForm'
 import Login from './containers/Login'
 import Info from './containers/Info'
+import Cleanup from './containers/Info/Cleanup'
+import WishList from './containers/Info/WishList'
 
 // Components
 import Loading from 'components/Loading'
@@ -23,14 +25,14 @@ import Loading from 'components/Loading'
 import './stylesheets/main.scss'
 
 // Redux
-import { checkLogin } from 'store/actions/auth'
+import { checkLoginHost } from 'store/actions/auth'
 
 class App extends Component {
   static propTypes = {
     User: PropTypes.any,
 
     // Redux
-    checkLogin: PropTypes.func,
+    checkLoginHost: PropTypes.func,
     Ready: PropTypes.bool
   }
   constructor (props) {
@@ -39,16 +41,23 @@ class App extends Component {
     this.authenticated = this.authenticated.bind(this)
   }
   componentWillMount () {
-    this.props.checkLogin()
+    this.props.checkLoginHost()
   }
   authenticated () {
     return this.props.User !== false
+  }
+
+  renderRoute (path, render) {
+    return (
+      <Route exact path={path} render={({match}) => render(match.params)} />
+    )
   }
 
   render () {
     if (!this.props.Ready) {
       return (<Loading />)
     }
+    const redirect = (<Redirect to={{pathname: '/'}} />)
     return (
       <div className="App">
         <Alert />
@@ -56,12 +65,15 @@ class App extends Component {
           <div>
             <Navigation />
             <div className="container">
-              <Route exact path="/" render={props => (!this.authenticated() ? (<Login />) : (<Redirect to={{pathname: '/hello'}} />))} />
-              <Route path="/hello" render={props => (this.authenticated() ? (<Welcome />) : (<Redirect to={{pathname: '/'}} />))} />
-              <Route path="/calendar" render={props => (this.authenticated() ? (<Calendar />) : (<Redirect to={{pathname: '/'}} />))} />
-              <Route path="/bookings" render={props => (this.authenticated() ? (<Bookings />) : (<Redirect to={{pathname: '/'}} />))} />
-              <Route path="/booking/:id" render={({match}) => (this.authenticated() ? (<BookingForm id={match.params.id} />) : (<Redirect to={{pathname: '/'}} />))} />
-              <Route path="/info" render={props => (this.authenticated() ? (<Info />) : (<Redirect to={{pathname: '/'}} />))} />
+              <Route exact path="/" render={props => (!this.authenticated() ? <Login /> : (<Redirect to={{pathname: '/hello'}} />))} />
+              {this.renderRoute('/hello', params => (this.authenticated() ? <Welcome /> : redirect))}
+              {this.renderRoute('/calendar', params => (this.authenticated() ? <Calendar /> : redirect))}
+              {this.renderRoute('/bookings', params => (this.authenticated() ? <Bookings /> : redirect))}
+              {this.renderRoute('/booking/:id', params => (this.authenticated() ? <BookingForm /> : redirect))}
+              {this.renderRoute('/info', params => (this.authenticated() ? <Info /> : redirect))}
+              {this.renderRoute('/info/cleanup', params => (this.authenticated() ? <Cleanup /> : redirect))}
+              {this.renderRoute('/info/wishlist', params => (this.authenticated() ? <WishList /> : redirect))}
+
             </div>
           </div>
         </ConnectedRouter>
@@ -79,7 +91,7 @@ export const mapStateToProps = (state, ownProps) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    checkLogin
+    checkLoginHost
   }, dispatch)
 }
 
