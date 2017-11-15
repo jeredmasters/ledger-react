@@ -21,11 +21,12 @@ class EditorField extends React.Component {
     input.onBlur(input.value)
   }
   render () {
-    const {input} = this.props
+    const {input, label, meta: {touched, error}} = this.props
     const {...inputField} = input
 
     return (
       <div>
+        <label>{label}</label>
         <ReactQuill
           {...inputField}
 
@@ -36,6 +37,7 @@ class EditorField extends React.Component {
           bounds={'.app'}
           placeholder={this.props.placeholder}
         />
+        {touched && error && <span>{error}</span>}
       </div>
     )
   }
@@ -47,7 +49,7 @@ class EditorField extends React.Component {
  */
 EditorField.modules = {
   toolbar: [
-    [{ 'header': '1' }, {'header': '2'}],
+    [{'header': '2'}],
     [{size: []}],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{'list': 'ordered'}, {'list': 'bullet'},
@@ -76,7 +78,9 @@ EditorField.formats = [
  */
 EditorField.propTypes = {
   placeholder: PropTypes.string,
-  input: PropTypes.any
+  input: PropTypes.any,
+  label: PropTypes.string,
+  meta: PropTypes.any
 }
 
 export default EditorField

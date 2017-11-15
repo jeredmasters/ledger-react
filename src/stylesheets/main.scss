@@ -3,6 +3,8 @@
 @import 'vendor/bootstrap.css';
 @import 'vendor/font-awesome.css';
 @import 'vendor/quill.css';
+@import 'vendor/react-select.scss';
+@import 'vendor/react-confirm-alert.css';
 
 @import '_base';
 
@@ -11,3 +13,4 @@
 @import 'components/_label';
 @import 'components/_buttons';
 @import 'components/_editor';
+@import 'components/_info';

@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Back from 'components/Form/Back'
 import Button from 'components/Form/Button'
 import EditMode from './EditMode'
 class InfoContent extends React.Component {
   static propTypes = {
     InfoContent: PropTypes.object,
-    handle: PropTypes.string.isRequired
+    handle: PropTypes.string.isRequired,
+    Admin: PropTypes.bool
   }
   constructor (props) {
     super(props)
@@ -15,7 +17,7 @@ class InfoContent extends React.Component {
     this.handleClick = this.handleClick.bind(this)
 
     this.state = {
-      editing: false
+      editing: props.handle === 'new'
     }
   }
   handleClick () {
@@ -38,14 +40,27 @@ class InfoContent extends React.Component {
             <hr />
           </div>
         </div>
-        <div className="row">
-          <div className="col-sm-12 text-right">
-            <Button onClick={this.handleClick}>Edit</Button>
+        {this.props.Admin
+          ? <div className="row">
+            <div className="col-sm-12 text-right">
+              <Button onClick={this.handleClick}>Edit</Button>
+            </div>
           </div>
-        </div>
+          : null}
       </div>
     )
   }
 }
 
-export default InfoContent
+export const mapStateToProps = (state, ownProps) => {
+  return {
+    Admin: state.User.access.toString() === '3'
+  }
+}
+
+export const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoContent)

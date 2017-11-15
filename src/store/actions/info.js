@@ -28,11 +28,11 @@ export const saveInfo = (info) => {
   }
 }
 
-export const deleteInfo = (id) => {
+export const deleteInfo = (handle) => {
   return (dispatch) => {
     dispatch(push('/calendar'))
-    api.destroy('b/infos/' + id).then(() => {
-      dispatch(push('/calendar'))
+    api.destroy('b/info/' + handle, {handle: handle}).then(() => {
+      dispatch(push('/info'))
       dispatch(fetchInfo())
     })
   }

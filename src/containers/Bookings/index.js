@@ -24,7 +24,7 @@ class Bookings extends React.Component {
     super(props)
 
     this.state = {
-      onlyMe: true
+      onlyMe: false
     }
 
     this.handleFilter = this.handleFilter.bind(this)
