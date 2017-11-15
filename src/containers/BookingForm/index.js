@@ -9,7 +9,7 @@ import moment from 'moment'
 
 // Components
 import DateRangeField from '../../components/Fields/DateRangeField'
-import Checkbox from 'components/Fields/Checkbox'
+import CheckboxField from 'components/Fields/CheckboxField'
 import Loading from 'components/Loading'
 import Back from 'components/Form/Back'
 
@@ -81,7 +81,8 @@ class Booking extends React.Component {
               <Field
                 name="name"
                 className="form-control"
-                component="input" />
+                component="input"
+              />
             </div>
           </div>
           <div className="col-sm-3">
@@ -99,7 +100,8 @@ class Booking extends React.Component {
           <Field
             name="dates"
             component={DateRangeField}
-            specialDays={this.props.bookedDays} />
+            specialDays={this.props.bookedDays}
+          />
           {this.renderConflicts()}
         </div>
         <div className="row">
@@ -113,21 +115,24 @@ class Booking extends React.Component {
               name="main"
               label="Main"
               className="bg-main"
-              component={Checkbox} />
+              component={CheckboxField}
+            />
           </div>
           <div className="col-sm-3">
             <Field
               name="flat"
               label="Flat"
               className="bg-flat"
-              component={Checkbox} />
+              component={CheckboxField}
+            />
           </div>
           <div className="col-sm-3">
             <Field
               name="studio"
               label="Studio"
               className="bg-studio"
-              component={Checkbox} />
+              component={CheckboxField}
+            />
           </div>
         </div>
         <div className="row">

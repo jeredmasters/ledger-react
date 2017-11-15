@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 // import PropTypes from 'prop-types'
 
 // Redux
-import { fetchBookings } from 'store/actions/bookings'
 
 // Components
 import Checkbox from 'components/Form/Checkbox'
@@ -49,7 +48,6 @@ export const mapStateToProps = (state, ownProps) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchBookings
   }, dispatch)
 }
 

@@ -43,7 +43,7 @@ class Bookings extends React.Component {
     }
     const bookings = (
       this.state.onlyMe
-        ? this.props.Bookings.filter(b => b.user_id === this.props.User.id)
+        ? this.props.Bookings.filter(b => b.user_id.toString() === this.props.User.id.toString())
         : this.props.Bookings
     ).sort((a, b) => (a.start.isAfter(b.start)))
 

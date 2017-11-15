@@ -2,6 +2,7 @@
 @import 'vendor/app.css';
 @import 'vendor/bootstrap.css';
 @import 'vendor/font-awesome.css';
+@import 'vendor/quill.css';
 
 @import '_base';
 
@@ -9,3 +10,4 @@
 @import 'components/_date-range';
 @import 'components/_label';
 @import 'components/_buttons';
+@import 'components/_editor';

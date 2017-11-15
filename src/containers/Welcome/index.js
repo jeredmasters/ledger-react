@@ -40,7 +40,7 @@ class Welcome extends React.Component {
             <Link to="/bookings" className="btn btn-info">See my Bookings <i className="fa fa-list" aria-hidden="true" /></Link>
           </div>
           <div className="col-sm-4 col-lg-3 text-center">
-            <Link to="/info/cleanup" className="btn btn-success">See info about the house <i className="fa fa-info-circle" aria-hidden="true" /></Link>
+            <Link to="/info" className="btn btn-success">See info about the house <i className="fa fa-info-circle" aria-hidden="true" /></Link>
           </div>
         </div>
         <div className="row">

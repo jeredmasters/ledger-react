@@ -6,7 +6,7 @@ import createHistory from 'history/createBrowserHistory'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 // get reducers
-import { profileReducer, bookingsReducer, bookingStartReducer } from './reducers'
+import { profileReducer, bookingsReducer, bookingStartReducer, infoReducer } from './reducers'
 import reduxFormReducer from './reducers/redux-form'
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -19,6 +19,7 @@ const reducers = combineReducers({
   User: profileReducer,
   Bookings: bookingsReducer,
   BookingStart: bookingStartReducer,
+  Info: infoReducer,
   router: routerReducer,
   form: reduxFormReducer
 })

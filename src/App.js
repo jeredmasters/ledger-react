@@ -49,7 +49,7 @@ class App extends Component {
 
   renderRoute (path, render) {
     return (
-      <Route exact path={path} render={({match}) => render(match.params)} />
+      <Route path={path} render={({match}) => render(match.params)} />
     )
   }
 
@@ -69,10 +69,10 @@ class App extends Component {
               {this.renderRoute('/hello', params => (this.authenticated() ? <Welcome /> : redirect))}
               {this.renderRoute('/calendar', params => (this.authenticated() ? <Calendar /> : redirect))}
               {this.renderRoute('/bookings', params => (this.authenticated() ? <Bookings /> : redirect))}
-              {this.renderRoute('/booking/:id', params => (this.authenticated() ? <BookingForm /> : redirect))}
-              {this.renderRoute('/info', params => (this.authenticated() ? <Info /> : redirect))}
-              {this.renderRoute('/info/cleanup', params => (this.authenticated() ? <Cleanup /> : redirect))}
-              {this.renderRoute('/info/wishlist', params => (this.authenticated() ? <WishList /> : redirect))}
+              {this.renderRoute('/booking/:id', params => (this.authenticated() ? <BookingForm id={params.id} /> : redirect))}
+              {this.renderRoute('/info/:handle?', params => (this.authenticated() ? <Info handle={params.handle} /> : redirect))}
+              {this.renderRoute('/cleanup', params => (this.authenticated() ? <Cleanup /> : redirect))}
+              {this.renderRoute('/wishlist', params => (this.authenticated() ? <WishList /> : redirect))}
 
             </div>
           </div>

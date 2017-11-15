@@ -43,7 +43,7 @@ class Navigation extends React.Component {
         <ul className="nav navbar-nav">
           <li><Link to="/calendar" onClick={this.handleLink}>Calendar</Link></li>
           <li><Link to="/bookings" onClick={this.handleLink}>Bookings</Link></li>
-          <li><Link to="/info/cleanup" onClick={this.handleLink}>Info</Link></li>
+          <li><Link to="/info" onClick={this.handleLink}>Info</Link></li>
         </ul>
         <ul className="nav navbar-nav navbar-right">
           <li><Link to="/logout">Logout</Link></li>

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 // import PropTypes from 'prop-types'
 
 // Redux
-import { fetchBookings } from 'store/actions/bookings'
 
 class WishList extends React.Component {
   renderRow (text, index) {
@@ -46,7 +45,6 @@ export const mapStateToProps = (state, ownProps) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchBookings
   }, dispatch)
 }
 

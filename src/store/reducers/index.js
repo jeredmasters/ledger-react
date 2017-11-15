@@ -19,6 +19,7 @@ export const bookingsReducer = (state = null, action) => {
       return state
   }
 }
+
 export const bookingStartReducer = (state = null, action) => {
   switch (action.type) {
     case Types.START_BOOKING:
@@ -28,6 +29,13 @@ export const bookingStartReducer = (state = null, action) => {
   }
 }
 
-export const conflictableBookingReducer = () => {
-
+export const infoReducer = (state = null, action) => {
+  switch (action.type) {
+    case Types.REQUEST_INFO:
+      return state
+    case Types.RECEIVE_INFO:
+      return action.payload
+    default:
+      return state
+  }
 }
